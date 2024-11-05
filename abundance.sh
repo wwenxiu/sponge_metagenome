@@ -9,7 +9,7 @@ module load miniconda3
 source activate bwa
 bwa index $masked_genomefn
 for i in *_1.fastq; do
-bwa mem -5SP -t 32 ${1/.fa}_masked.fasta $i ${i/_1.fastq/_2.fastq} | samblaster  > ${i/_1.fastq}.sam
+bwa mem -5SP -t 32 $masked_genomefn $i ${i/_1.fastq/_2.fastq} | samblaster  > ${i/_1.fastq}.sam
 done
 conda deactivate
 source activate samtools
@@ -28,6 +28,6 @@ conda deactivate
 
 #bbmap calculate reads
 source activate bbmap
-for i in *sorted.bam; do
+for i in *filtered.bam; do
 pileup.sh in=$i out=${i/.bam/}.cov rpkm=${i/.bam/}.rpkm overwrite=true
 done
